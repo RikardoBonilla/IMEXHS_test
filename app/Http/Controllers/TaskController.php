@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Services\WeatherService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -150,6 +151,43 @@ class TaskController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Tarea eliminada exitosamente'
+        ]);
+    }
+
+    public function getWeather($id, WeatherService $weatherService)
+    {
+        $task = auth()->user()->tasks()->find($id);
+
+        if (!$task) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tarea no encontrada'
+            ], 404);
+        }
+
+        if (!$task->due_date) {
+            return response()->json([
+                'success' => false,
+                'message' => 'La tarea no tiene fecha de vencimiento'
+            ], 400);
+        }
+
+        $weatherData = $weatherService->getWeatherByCity();
+
+        if (!$weatherData['success']) {
+            return response()->json($weatherData, 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'task' => [
+                    'id' => $task->id,
+                    'title' => $task->title,
+                    'due_date' => $task->due_date->format('Y-m-d'),
+                ],
+                'weather' => $weatherData['data']
+            ]
         ]);
     }
 }
