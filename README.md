@@ -22,8 +22,8 @@ API REST desarrollada en Laravel para la gestión de tareas personales con auten
 
 ### 1. Clonar el repositorio
 ```bash
-git clone <repository-url>
-cd task-management-api
+git clone https://github.com/RikardoBonilla/IMEXHS_test.git
+cd IMEXHS_test
 ```
 
 ### 2. Instalar dependencias
@@ -42,6 +42,7 @@ Editar el archivo `.env` con la siguiente configuración:
 # Aplicación
 APP_NAME="Task Management API"
 APP_ENV=local
+APP_KEY=
 APP_DEBUG=true
 APP_URL=http://localhost:8000
 
@@ -130,8 +131,8 @@ La API estará disponible en `http://localhost:8000`
 curl -X POST http://localhost:8000/api/register \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Juan Pérez",
-    "email": "juan@example.com",
+    "name": "Ricardo Bonilla",
+    "email": "ricardoandresbonilla@gmail.com",
     "password": "password123"
   }'
 ```
@@ -141,7 +142,7 @@ curl -X POST http://localhost:8000/api/register \
 curl -X POST http://localhost:8000/api/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "juan@example.com",
+    "email": "ricardoandresbonilla@gmail.com",
     "password": "password123"
   }'
 ```
@@ -155,7 +156,7 @@ curl -X POST http://localhost:8000/api/tasks \
     "title": "Revisar propuesta comercial",
     "description": "Análisis detallado del documento recibido",
     "status": "pending",
-    "due_date": "2024-02-15"
+    "due_date": "2025-08-15"
   }'
 ```
 
@@ -174,8 +175,8 @@ curl -X GET http://localhost:8000/api/tasks/1/weather \
   "data": {
     "id": 1,
     "name": "Juan Pérez",
-    "email": "juan@example.com",
-    "created_at": "2024-01-15T10:30:00Z"
+    "email": "ricardoandresbonilla@gmail.com",
+    "created_at": "2025-08-15T10:30:00Z"
   }
 }
 ```
@@ -191,8 +192,8 @@ curl -X GET http://localhost:8000/api/tasks/1/weather \
     "status": "pending",
     "due_date": "2024-02-15",
     "user_id": 1,
-    "created_at": "2024-01-15T10:30:00Z",
-    "updated_at": "2024-01-15T12:00:00Z"
+    "created_at": "2025-08-15T10:30:00Z",
+    "updated_at": "2025-08-15T12:00:00Z"
   }
 }
 ```
@@ -229,4 +230,4 @@ php artisan test
 
 ## Licencia
 
-Este proyecto es desarrollado como prueba técnica.
+Este proyecto es desarrollado por Ricardo Andres Bonilla Prada.
