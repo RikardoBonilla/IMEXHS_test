@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Services\WeatherService;
+use App\Services\EmailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -187,6 +188,41 @@ class TaskController extends Controller
                     'due_date' => $task->due_date->format('Y-m-d'),
                 ],
                 'weather' => $weatherData['data']
+            ]
+        ]);
+    }
+
+    public function sendReminder($id, EmailService $emailService)
+    {
+        $task = auth()->user()->tasks()->find($id);
+
+        if (!$task) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tarea no encontrada'
+            ], 404);
+        }
+
+        if (!$task->due_date) {
+            return response()->json([
+                'success' => false,
+                'message' => 'La tarea no tiene fecha de vencimiento'
+            ], 400);
+        }
+
+        $result = $emailService->sendTaskReminder($task, auth()->user());
+
+        if (!$result['success']) {
+            return response()->json($result, 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Recordatorio enviado exitosamente',
+            'data' => [
+                'task_id' => $task->id,
+                'sent_to' => auth()->user()->email,
+                'sent_at' => now()->toISOString()
             ]
         ]);
     }

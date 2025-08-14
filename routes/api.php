@@ -28,4 +28,5 @@ Route::middleware('auth:api')->group(function () {
     // Tareas
     Route::apiResource('tasks', TaskController::class);
     Route::get('tasks/{id}/weather', [TaskController::class, 'getWeather']);
+    Route::post('tasks/{id}/send-reminder', [TaskController::class, 'sendReminder']);
 });

@@ -1,66 +1,232 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# API REST de Gestión de Tareas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API REST desarrollada en Laravel para la gestión de tareas personales con autenticación JWT, integración con servicios externos y notificaciones por email.
 
-## About Laravel
+## Características
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- ✅ Autenticación JWT con registro, login y logout
+- ✅ CRUD completo de tareas con paginación
+- ✅ Integración con OpenWeatherMap API para información del clima
+- ✅ Sistema de notificaciones por email con Mailgun
+- ✅ Validaciones de negocio robustas
+- ✅ Respuestas JSON estructuradas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos del Sistema
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 7.4 o superior
+- PostgreSQL 12+
+- Composer
+- Laravel 10+
 
-## Learning Laravel
+## Instalación
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Clonar el repositorio
+```bash
+git clone <repository-url>
+cd task-management-api
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 2. Instalar dependencias
+```bash
+composer install
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 3. Configurar variables de entorno
+```bash
+cp .env.example .env
+```
 
-## Laravel Sponsors
+Editar el archivo `.env` con la siguiente configuración:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```env
+# Aplicación
+APP_NAME="Task Management API"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000
 
-### Premium Partners
+# Base de Datos PostgreSQL
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=task_management
+DB_USERNAME=postgres
+DB_PASSWORD=tu_password
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+# JWT Configuration
+JWT_TTL=60
+JWT_REFRESH_TTL=20160
 
-## Contributing
+# OpenWeatherMap API
+OPENWEATHER_API_KEY=tu_api_key_aqui
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Mailgun Configuration
+MAILGUN_DOMAIN=tu_dominio_mailgun
+MAILGUN_SECRET=tu_secret_mailgun
+MAIL_MAILER=mailgun
+MAIL_FROM_ADDRESS="noreply@tudominio.com"
+MAIL_FROM_NAME="${APP_NAME}"
+```
 
-## Code of Conduct
+### 4. Generar claves de aplicación
+```bash
+php artisan key:generate
+php artisan jwt:secret
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Ejecutar migraciones
+```bash
+php artisan migrate
+```
 
-## Security Vulnerabilities
+### 6. Iniciar el servidor
+```bash
+php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+La API estará disponible en `http://localhost:8000`
 
-## License
+## Configuración de Servicios Externos
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### OpenWeatherMap API
+1. Registrarse en [OpenWeatherMap](https://openweathermap.org/api)
+2. Obtener API Key gratuita
+3. Configurar `OPENWEATHER_API_KEY` en el archivo `.env`
+
+### Mailgun
+1. Registrarse en [Mailgun](https://www.mailgun.com/)
+2. Configurar dominio
+3. Obtener las credenciales y configurar en `.env`:
+   - `MAILGUN_DOMAIN`
+   - `MAILGUN_SECRET`
+
+## Endpoints de la API
+
+### Autenticación
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| POST | `/api/register` | Registro de nuevo usuario |
+| POST | `/api/login` | Iniciar sesión |
+| POST | `/api/logout` | Cerrar sesión |
+| GET | `/api/profile` | Obtener perfil del usuario |
+
+### Tareas (Requieren autenticación)
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/tasks` | Listar tareas (paginado) |
+| POST | `/api/tasks` | Crear nueva tarea |
+| GET | `/api/tasks/{id}` | Obtener tarea específica |
+| PUT | `/api/tasks/{id}` | Actualizar tarea |
+| DELETE | `/api/tasks/{id}` | Eliminar tarea |
+| GET | `/api/tasks/{id}/weather` | Obtener clima para tarea |
+| POST | `/api/tasks/{id}/send-reminder` | Enviar recordatorio por email |
+
+## Ejemplos de Uso
+
+### Registro de Usuario
+```bash
+curl -X POST http://localhost:8000/api/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Juan Pérez",
+    "email": "juan@example.com",
+    "password": "password123"
+  }'
+```
+
+### Login
+```bash
+curl -X POST http://localhost:8000/api/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "juan@example.com",
+    "password": "password123"
+  }'
+```
+
+### Crear Tarea
+```bash
+curl -X POST http://localhost:8000/api/tasks \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "title": "Revisar propuesta comercial",
+    "description": "Análisis detallado del documento recibido",
+    "status": "pending",
+    "due_date": "2024-02-15"
+  }'
+```
+
+### Obtener Clima para Tarea
+```bash
+curl -X GET http://localhost:8000/api/tasks/1/weather \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+## Estructura de Respuestas
+
+### Usuario
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "name": "Juan Pérez",
+    "email": "juan@example.com",
+    "created_at": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+### Tarea
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "title": "Revisar propuesta comercial",
+    "description": "Análisis detallado del documento recibido",
+    "status": "pending",
+    "due_date": "2024-02-15",
+    "user_id": 1,
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-01-15T12:00:00Z"
+  }
+}
+```
+
+## Validaciones
+
+### Usuarios
+- Email único en la base de datos
+- Contraseña mínimo 8 caracteres con letras y números
+- Nombre obligatorio, máximo 100 caracteres
+
+### Tareas
+- Título obligatorio, máximo 200 caracteres
+- Descripción opcional, máximo 1000 caracteres
+- Fecha de vencimiento no puede ser anterior a hoy
+- Status: `pending`, `in_progress`, `completed`
+- Los usuarios solo pueden ver/modificar sus propias tareas
+
+## Testing
+
+```bash
+php artisan test
+```
+
+## Despliegue en Producción
+
+1. Configurar servidor web (Nginx/Apache)
+2. Configurar base de datos PostgreSQL
+3. Configurar variables de entorno de producción
+4. Ejecutar migraciones: `php artisan migrate --force`
+5. Optimizar aplicación: `php artisan optimize`
+6. Configurar HTTPS y certificados SSL
+7. Configurar trabajos de cola si es necesario
+
+## Licencia
+
+Este proyecto es desarrollado como prueba técnica.
